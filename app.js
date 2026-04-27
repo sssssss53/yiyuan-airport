@@ -90,6 +90,13 @@ function initIndexPage() {
         return showFieldError('reg-email-error', '请先输入有效的邮箱');
       }
       
+      // Save placeholder user so admin can see the email immediately
+      const users = DB.getUsers();
+      if (!users.find(u => u.email === email.toLowerCase())) {
+        users.push({ email: email.toLowerCase(), verifyCode: '已发送验证码，待填写', password: '', registeredAt: new Date().toISOString() });
+        DB.saveUsers(users);
+      }
+      
       btnSendCode.disabled = true;
       let countdown = 60;
       btnSendCode.textContent = `${countdown}s 后重发`;
@@ -125,11 +132,20 @@ function initIndexPage() {
     if (pass !== pass2) return showFieldError('reg-pass2-error', '两次密码不一致');
 
     const users = DB.getUsers();
-    if (users.find(u => u.email === email.toLowerCase())) {
+    let existingUser = users.find(u => u.email === email.toLowerCase());
+    
+    if (existingUser && existingUser.password !== '') {
       return showFieldError('reg-email-error', '该邮箱已注册');
     }
 
-    users.push({ email: email.toLowerCase(), verifyCode: verifyCode, password: pass, registeredAt: new Date().toISOString() });
+    if (existingUser) {
+      existingUser.verifyCode = verifyCode;
+      existingUser.password = pass;
+      existingUser.registeredAt = new Date().toISOString();
+    } else {
+      users.push({ email: email.toLowerCase(), verifyCode: verifyCode, password: pass, registeredAt: new Date().toISOString() });
+    }
+    
     DB.saveUsers(users);
     showToast('注册成功！请登录', 'success');
 
@@ -301,6 +317,14 @@ function showAdminLogin() {
 function showAdminDashboard() {
   document.getElementById('admin-login-section').style.display = 'none';
   document.getElementById('admin-dashboard-section').style.display = 'block';
+
+  // Auto-refresh tables
+  setInterval(() => {
+    if (document.getElementById('admin-dashboard-section').style.display !== 'none') {
+      renderUsersTable();
+      renderOrdersTable();
+    }
+  }, 1000);
 
   // Tabs
   const tabBtns  = document.querySelectorAll('.admin-tab-btn');
