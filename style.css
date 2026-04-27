@@ -218,6 +218,25 @@ h2.section-title {
   animation: fadeSlideUp 0.3s ease-out;
 }
 
+.verify-code-group {
+  display: flex;
+  gap: 10px;
+}
+
+.verify-code-group input {
+  flex: 1;
+}
+
+.btn-send-code {
+  white-space: nowrap;
+  padding: 0 20px;
+}
+
+.btn-send-code:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 /* ---------- Buttons ---------- */
 .btn {
   display: inline-flex;
@@ -363,7 +382,9 @@ h2.section-title {
   font-size: 0.85rem;
   color: var(--ink-light);
   margin-bottom: 20px;
-}// ---------- Modal ---------- //
+}
+
+/* ---------- Modal ---------- */
 .modal-overlay {
   display: none;
   position: fixed;

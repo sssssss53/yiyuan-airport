@@ -79,6 +79,35 @@ function initIndexPage() {
     });
   });
 
+  // Send Verify Code Logic
+  const btnSendCode = document.getElementById('btn-send-code');
+  if (btnSendCode) {
+    btnSendCode.addEventListener('click', () => {
+      clearErrors(regForm);
+      const email = document.getElementById('reg-email').value.trim();
+      const ev = validateEmail(email);
+      if (!ev.ok) {
+        return showFieldError('reg-email-error', '请先输入有效的邮箱');
+      }
+      
+      btnSendCode.disabled = true;
+      let countdown = 60;
+      btnSendCode.textContent = `${countdown}s 后重发`;
+      showToast('验证码已发送，请查收邮件及垃圾箱', 'success');
+
+      const interval = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+          btnSendCode.textContent = `${countdown}s 后重发`;
+        } else {
+          clearInterval(interval);
+          btnSendCode.textContent = '发送验证码';
+          btnSendCode.disabled = false;
+        }
+      }, 1000);
+    });
+  }
+
   // Register
   regForm && regForm.addEventListener('submit', e => {
     e.preventDefault();
