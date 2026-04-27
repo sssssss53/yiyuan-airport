@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="一元机场 — 注册与登录">
+  <title>一元机场 — 登录</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-wrapper">
+
+    <div class="glass-card">
+      <!-- Brand -->
+      <div class="ink-seal">机场</div>
+      <h1 class="brand">一元<span class="accent">机场</span></h1>
+      <p class="subtitle">全球加速 · 畅游无界</p>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="register-panel" id="tab-register">✦ 新用户注册</button>
+        <button class="tab-btn" data-tab="login-panel" id="tab-login">✦ 老用户登录</button>
+      </div>
+
+      <!-- Register Panel -->
+      <div class="tab-panel active" id="register-panel">
+        <form id="register-form" autocomplete="off">
+          <div class="form-group">
+            <label for="reg-email">邮箱账号</label>
+            <input type="email" id="reg-email" placeholder="支持 Gmail / QQ / Foxmail / 163" required>
+            <div class="error-text" id="reg-email-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="reg-verify-code">邮箱验证码</label>
+            <input type="text" id="reg-verify-code" placeholder="请输入邮箱验证码" required>
+            <div class="error-text" id="reg-code-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="reg-password">设置密码</label>
+            <input type="password" id="reg-password" placeholder="至少 8 位" required minlength="8">
+            <div class="error-text" id="reg-pass-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="reg-password2">确认密码</label>
+            <input type="password" id="reg-password2" placeholder="再次输入密码" required>
+            <div class="error-text" id="reg-pass2-error"></div>
+          </div>
+          <button type="submit" class="btn btn-primary">立即注册</button>
+        </form>
+      </div>
+
+      <!-- Login Panel -->
+      <div class="tab-panel" id="login-panel">
+        <form id="login-form" autocomplete="off">
+          <div class="form-group">
+            <label for="login-email">邮箱账号</label>
+            <input type="email" id="login-email" placeholder="请输入注册邮箱" required>
+            <div class="error-text" id="login-email-error"></div>
+          </div>
+          <div class="form-group">
+            <label for="login-password">密码</label>
+            <input type="password" id="login-password" placeholder="请输入密码" required>
+            <div class="error-text" id="login-pass-error"></div>
+          </div>
+          <button type="submit" class="btn btn-primary">登 录</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

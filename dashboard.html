@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="一元机场 — 全球加速服务">
+  <title>一元机场 — 套餐选择</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-wrapper" id="dashboard-page">
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+      <div class="user-info">
+        当前用户：<strong id="user-email-display"></strong>
+      </div>
+      <button class="btn btn-outline btn-small" id="btn-logout">退出登录</button>
+    </div>
+
+    <!-- Main Card -->
+    <div class="glass-card wide">
+      <div class="ink-seal">机场</div>
+      <h1 class="brand">一元<span class="accent">机场</span></h1>
+      <p class="subtitle">稳定高速 · 全球覆盖 · 一键连接</p>
+
+      <!-- Plans -->
+      <div class="plans-container">
+        <!-- Standard Plan -->
+        <div class="plan-card">
+          <div class="plan-icon">🌏</div>
+          <div class="plan-name">常规线路</div>
+          <div class="plan-desc">覆盖 <strong>80+</strong> 个国家和地区<br>稳定高速，满足日常需求</div>
+          <div class="plan-price">¥60</div>
+          <div class="plan-period">/ 年</div>
+          <button class="btn btn-primary btn-buy" data-plan="standard" data-amount="60">
+            立即订购
+          </button>
+        </div>
+
+        <!-- Premium Plan -->
+        <div class="plan-card premium">
+          <div class="plan-icon">🚀</div>
+          <div class="plan-name">高端线路</div>
+          <div class="plan-desc">覆盖 <strong>120+</strong> 个国家和地区<br>专线加速，极致体验</div>
+          <div class="plan-price">¥350</div>
+          <div class="plan-period">/ 年</div>
+          <button class="btn btn-danger btn-buy" data-plan="premium" data-amount="350">
+            立即订购
+          </button>
+        </div>
+      </div>
+
+      <!-- Status Banner -->
+      <div class="status-banner" id="status-banner"></div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal-overlay" id="pay-overlay">
+      <div class="modal-content">
+        <h3>支付宝扫码支付</h3>
+        <p class="modal-plan-name"></p>
+        <div class="modal-amount">¥0</div>
+        <div class="qr-placeholder">
+          <img id="qr-image" src="" alt="支付宝二维码" style="display:none;">
+          <span id="qr-fallback">请管理员上传二维码</span>
+        </div>
+        <p style="font-size:0.85rem;color:var(--ink-light);margin-top:8px;">
+          请使用支付宝扫描上方二维码完成支付
+        </p>
+        <div class="modal-actions">
+          <button class="btn btn-outline btn-small" id="modal-close">取消</button>
+          <button class="btn btn-primary btn-small" id="btn-confirm-pay">已完成支付</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
