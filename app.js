@@ -2,19 +2,46 @@
    一元机场 — 应用逻辑（app.js）
    ======================================== */
 
-// ---- Storage Helpers ----
+// ---- Storage Helpers (Network backed by Cloudflare KV) ----
 const DB = {
-  _get(key) {
-    try { return JSON.parse(localStorage.getItem(key)) || []; }
-    catch { return []; }
+  _data: { users: [], orders: [] },
+
+  async sync() {
+    try {
+      const res = await fetch('/api/data');
+      if (res.ok) {
+        this._data = await res.json();
+      }
+    } catch (e) {
+      console.error('Failed to sync from DB', e);
+    }
   },
-  _set(key, val) { localStorage.setItem(key, JSON.stringify(val)); },
 
-  getUsers()   { return this._get('yy_users'); },
-  saveUsers(u) { this._set('yy_users', u); },
+  async _saveToCloud() {
+    try {
+      await fetch('/api/data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this._data)
+      });
+    } catch (e) {
+      console.error('Failed to push to DB', e);
+    }
+  },
 
-  getOrders()   { return this._get('yy_orders'); },
-  saveOrders(o) { this._set('yy_orders', o); },
+  getUsers()   { return this._data.users || []; },
+  saveUsers(u) { 
+    this._data.users = u; 
+    this._saveToCloud(); 
+  },
+
+  getOrders()   { return this._data.orders || []; },
+  saveOrders(o) { 
+    this._data.orders = o; 
+    this._saveToCloud(); 
+  },
 
   getCurrentUser()   { return sessionStorage.getItem('yy_current_user'); },
   setCurrentUser(e)  { sessionStorage.setItem('yy_current_user', e); },
@@ -319,12 +346,13 @@ function showAdminDashboard() {
   document.getElementById('admin-dashboard-section').style.display = 'block';
 
   // Auto-refresh tables
-  setInterval(() => {
+  setInterval(async () => {
     if (document.getElementById('admin-dashboard-section').style.display !== 'none') {
+      await DB.sync();
       renderUsersTable();
       renderOrdersTable();
     }
-  }, 1000);
+  }, 2000);
 
   // Tabs
   const tabBtns  = document.querySelectorAll('.admin-tab-btn');
@@ -416,7 +444,8 @@ function clearErrors(form) {
 }
 
 // ---- Init ----
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+  await DB.sync();
   initIndexPage();
   initDashboard();
   initAdmin();
